@@ -11,7 +11,7 @@
         <h1>Confirmación de Compra</h1>
         <p class="product-description">Descripción del Producto: <span id="product-description"></span></p>
         <p class="product-price">Precio: €<span id="product-price"></span></p>
-        <form id="redsys-form" action="http://sis-t.sermepa.es:25443/sis/realizarPago" method="post">
+        <form id="redsys-form" method="post" action="display.php">
             <input type="hidden" name="Ds_Merchant_Amount" id="amount">
             <input type="hidden" name="Ds_Merchant_Order" id="order">
             <input type="hidden" name="Ds_Merchant_MerchantCode" value="012809">
@@ -23,7 +23,7 @@
             <input type="hidden" name="Ds_Merchant_UrlKO" value="https://palons29.github.io/Comercio-Electronico/cancel.html">
             <input type="hidden" name="Ds_Merchant_ProductDescription" id="product-description-hidden">
             <input type="hidden" name="Ds_Merchant_MerchantSignature" id="signature">
-            <button type="button" onclick="displayTransactionData()">Pagar con Redsýs</button>
+            <button type="submit">Pagar con Redsýs</button>
         </form>
     </div>
 
@@ -70,16 +70,6 @@
             const shaObj = new jsSHA("SHA-1", "TEXT");
             shaObj.update(data);
             return shaObj.getHash("HEX").toUpperCase();
-        }
-
-        function displayTransactionData() {
-            const form = document.getElementById('redsys-form');
-            const data = new FormData(form);
-            let displayData = "";
-            for (const [key, value] of data.entries()) {
-                displayData += `${key}: ${value}\n`;
-            }
-            alert(displayData);
         }
     </script>
 
