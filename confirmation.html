@@ -23,7 +23,7 @@
             <input type="hidden" name="Ds_Merchant_UrlKO" value="https://palons29.github.io/Comercio-Electronico/cancel.html">
             <input type="hidden" name="Ds_Merchant_ProductDescription" id="product-description-hidden">
             <input type="hidden" name="Ds_Merchant_MerchantSignature" id="signature">
-            <button type="submit">Pagar con Redsýs</button>
+            <button type="button" onclick="displayTransactionData()">Pagar con Redsýs</button>
         </form>
     </div>
 
@@ -67,20 +67,23 @@
 
         function generateSignature(order, amount, merchantCode, currency, transactionType, secretKey) {
             const data = `${amount}${order}${merchantCode}${currency}${transactionType}${secretKey}`;
-            const hash = sha1(data);
-            return hash.toUpperCase();
+            const shaObj = new jsSHA("SHA-1", "TEXT");
+            shaObj.update(data);
+            return shaObj.getHash("HEX").toUpperCase();
         }
 
-        function sha1(str) {
-            // SHA-1 implementation
-            const buffer = new TextEncoder("utf-8").encode(str);
-            return crypto.subtle.digest("SHA-1", buffer).then(hash => {
-                let hex = '';
-                const hashArray = Array.from(new Uint8Array(hash));
-                hashArray.forEach(b => hex += b.toString(16).padStart(2, '0'));
-                return hex;
-            });
+        function displayTransactionData() {
+            const form = document.getElementById('redsys-form');
+            const data = new FormData(form);
+            let displayData = "";
+            for (const [key, value] of data.entries()) {
+                displayData += `${key}: ${value}\n`;
+            }
+            alert(displayData);
         }
     </script>
+
+    <!-- Include jsSHA library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
 </body>
 </html>
