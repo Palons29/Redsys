@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Producto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Seleccione un Producto</h1>
+    <form id="product-form">
+        <div>
+            <input type="radio" id="product1" name="product" value="Producto 1" data-description="Descripción del Producto 1" data-price="1000">
+            <label for="product1">Producto 1 - $10.00</label>
+        </div>
+        <div>
+            <input type="radio" id="product2" name="product" value="Producto 2" data-description="Descripción del Producto 2" data-price="2000">
+            <label for="product2">Producto 2 - $20.00</label>
+        </div>
+        <div>
+            <input type="radio" id="product3" name="product" value="Producto 3" data-description="Descripción del Producto 3" data-price="3000">
+            <label for="product3">Producto 3 - $30.00</label>
+        </div>
+        <button type="button" onclick="goToConfirmationPage()">Comprar</button>
+    </form>
+
+    <script>
+        function goToConfirmationPage() {
+            const selectedProduct = document.querySelector('input[name="product"]:checked');
+            if (!selectedProduct) {
+                alert('Seleccione un producto');
+                return;
+            }
+
+            const description = selectedProduct.getAttribute('data-description');
+            const price = selectedProduct.getAttribute('data-price');
+            const product = selectedProduct.value;
+
+            window.location.href = `confirmation.html?product=${encodeURIComponent(product)}&description=${encodeURIComponent(description)}&price=${encodeURIComponent(price)}`;
+        }
+    </script>
+</body>
+</html>

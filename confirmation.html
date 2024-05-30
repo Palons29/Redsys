@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Compra</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmación de Compra</h1>
+        <form id="payment-form" action="process_payment.php" method="POST">
+            <p>Descripción del Producto: <span id="product-description"></span></p>
+            <p>Precio: $<span id="product-price"></span></p>
+            <input type="hidden" id="product-name" name="product-name">
+            <input type="hidden" id="product-description-input" name="description">
+            <input type="hidden" id="product-price-input" name="price">
+            <div>
+                <label for="customer-name">Nombre y Apellidos:</label>
+                <input type="text" id="customer-name" name="customer-name" required>
+            </div>
+            <button type="submit">Pago mediante Redsýs</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const product = params.get('product');
+            const description = params.get('description');
+            const price = params.get('price');
+
+            if (product && description && price) {
+                document.getElementById('product-description').innerText = description;
+                document.getElementById('product-price').innerText = (price / 100).toFixed(2);
+                document.getElementById('product-name').value = product;
+                document.getElementById('product-description-input').value = description;
+                document.getElementById('product-price-input').value = price;
+            } else {
+                alert('No se pudo obtener la información del producto.');
+            }
+        });
+    </script>
+</body>
+</html>
