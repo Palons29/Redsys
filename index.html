@@ -7,23 +7,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Seleccione un Producto</h1>
-        <form id="product-form" action="confirm.php" method="post">
-            <div>
-                <input type="radio" id="product1" name="product" value="Producto1" data-description="Descripción del Producto 1" data-price="1000" required>
-                <label for="product1">Producto 1 - $10.00</label>
-            </div>
-            <div>
-                <input type="radio" id="product2" name="product" value="Producto2" data-description="Descripción del Producto 2" data-price="2000" required>
-                <label for="product2">Producto 2 - $20.00</label>
-            </div>
-            <div>
-                <input type="radio" id="product3" name="product" value="Producto3" data-description="Descripción del Producto 3" data-price="3000" required>
-                <label for="product3">Producto 3 - $30.00</label>
-            </div>
-            <button type="submit">Comprar</button>
-        </form>
-    </div>
+    <h1>Seleccione un Producto</h1>
+    <form id="product-form">
+        <div>
+            <input type="radio" id="product1" name="product" value="Camiseta de la franquicia Zelda" data-price="10.00">
+            <label for="product1">Camiseta Zelda - 10.00€</label>
+        </div>
+        <div>
+            <input type="radio" id="product2" name="product" value="Telefono Movil de Apple" data-price="20.00">
+            <label for="product2">iPhone 4 - 20.00€</label>
+        </div>
+        <div>
+            <input type="radio" id="product3" name="product" value="Consola de videojuegos" data-price="30.00">
+            <label for="product3">PlayStation 1 - 30.00€</label>
+        </div>
+        <button type="button" onclick="goToConfirmationPage()">Comprar</button>
+    </form>
+
+    <script>
+        function goToConfirmationPage() {
+            const selectedProduct = document.querySelector('input[name="product"]:checked');
+            if (!selectedProduct) {
+                alert('Seleccione un producto');
+                return;
+            }
+
+            const description = selectedProduct.value;
+            const price = selectedProduct.getAttribute('data-price');
+
+            window.location.href = `confirmation.html?description=${encodeURIComponent(description)}&price=${encodeURIComponent(price)}`;
+        }
+    </script>
 </body>
 </html>
