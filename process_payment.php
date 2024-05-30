@@ -1,31 +1,25 @@
 <?php
-function generateOrderCode() {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $orderCode = '';
-    for ($i = 0; $i < 12; $i++) {
-        $orderCode .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $orderCode;
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $name = $_POST['name'];
 
-function generateSignature($amount, $order, $merchantCode, $currency, $transactionType, $secretKey) {
-    $data = $amount . $order . $merchantCode . $currency . $transactionType . $secretKey;
-    $signature = sha1($data);
-    return strtoupper($signature);
-}
+    // Datos del comercio
+    $merchant_code = "012809";
+    $terminal = "50";
+    $currency = "978";
+    $transaction_type = "0";
+    $secret_key = "UMH2809";
 
-$amount = $_POST['price'];
-$order = generateOrderCode();
-$merchantCode = "012809";
-$currency = "978";
-$transactionType = "0";
-$secretKey = "UMH2809";
-$signature = generateSignature($amount, $order, $merchantCode, $currency, $transactionType, $secretKey);
-$productDescription = $_POST['description'];
-$merchantName = "Mi Comercio";
-$customerName = $_POST['customer-name'];
-$urlOK = "https://palons29.github.io/Comercio-Electronico/success.html";
-$urlKO = "https://palons29.github.io/Comercio-Electronico/cancel.html";
+    // Generar código de pedido
+    $order = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 12);
+
+    // Concatenar datos para la firma
+    $signature_data = $price . $order . $merchant_code . $currency . $transaction_type . $secret_key;
+
+    // Generar la firma
+    $signature = strtoupper(sha1($signature_data));
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,24 +27,25 @@ $urlKO = "https://palons29.github.io/Comercio-Electronico/cancel.html";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación de Pago con Redsýs</title>
+    <title>Procesar Pago</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Datos de la Compra</h1>
-        <p><strong>Ds_Merchant_Amount:</strong> <?php echo $amount; ?></p>
-        <p><strong>Ds_Merchant_Currency:</strong> <?php echo $currency; ?></p>
-        <p><strong>Ds_Merchant_Order:</strong> <?php echo $order; ?></p>
-        <p><strong>Ds_Merchant_ProductDescription:</strong> <?php echo $productDescription; ?></p>
-        <p><strong>DS_Merchant_MerchantCode:</strong> <?php echo $merchantCode; ?></p>
-        <p><strong>DS_Merchant_MerchantName:</strong> <?php echo $merchantName; ?></p>
-        <p><strong>DS_Merchant_Terminal:</strong> 50</p>
-        <p><strong>DS_Merchant_TransactionType:</strong> <?php echo $transactionType; ?></p>
-        <p><strong>DS_Merchant_Titular:</strong> <?php echo $customerName; ?></p>
-        <p><strong>DS_Merchant_urlOK:</strong> <?php echo $urlOK; ?></p>
-        <p><strong>DS_Merchant_urlKO:</strong> <?php echo $urlKO; ?></p>
-        <p><strong>DS_Merchant_Signature:</strong> <?php echo $signature; ?></p>
+        <h1>Procesar Pago</h1>
+        <p><strong>Datos de la compra:</strong></p>
+        <p>Importe: <?php echo $price; ?></p>
+        <p>Moneda: <?php echo $currency; ?></p>
+        <p>Pedido: <?php echo $order; ?></p>
+        <p>Descripción del producto: <?php echo $description; ?></p>
+        <p>Código del comercio: <?php echo $merchant_code; ?></p>
+        <p>Nombre del comercio: Tu Comercio</p>
+        <p>Terminal: <?php echo $terminal; ?></p>
+        <p>Tipo de operación: <?php echo $transaction_type; ?></p>
+        <p>Nombre del cliente: <?php echo $name; ?></p>
+        <p>URL OK: http://tu-dominio.com/success.html</p>
+        <p>URL KO: http://tu-dominio.com/cancel.html</p>
+        <p>Firma digital: <?php echo $signature; ?></p>
     </div>
 </body>
 </html>
