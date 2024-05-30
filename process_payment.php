@@ -24,8 +24,8 @@ $signature = generateSignature($amount, $order, $merchantCode, $currency, $trans
 $productDescription = $_POST['description'];
 $merchantName = "Mi Comercio";
 $customerName = $_POST['customer-name'];
-$urlOK = "http://tu-dominio.com/success.html";
-$urlKO = "http://tu-dominio.com/cancel.html";
+$urlOK = "https://palons29.github.io/Comercio-Electronico/success.html";
+$urlKO = "https://palons29.github.io/Comercio-Electronico/cancel.html";
 ?>
 
 <!DOCTYPE html>
