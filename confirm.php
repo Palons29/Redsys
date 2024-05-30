@@ -18,6 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $price = 3000;
             break;
     }
+} else {
+    // Redirigir si el método no es POST
+    header("Location: index.html");
+    exit();
 }
 ?>
 
@@ -32,11 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Confirmación de Pago</h1>
-        <p>Producto: <?php echo $description; ?></p>
+        <p>Producto: <?php echo htmlspecialchars($description); ?></p>
         <p>Precio: $<?php echo number_format($price / 100, 2); ?></p>
         <form action="process_payment.php" method="post">
-            <input type="hidden" name="description" value="<?php echo $description; ?>">
-            <input type="hidden" name="price" value="<?php echo $price; ?>">
+            <input type="hidden" name="description" value="<?php echo htmlspecialchars($description); ?>">
+            <input type="hidden" name="price" value="<?php echo htmlspecialchars($price); ?>">
             <label for="name">Nombre y Apellidos:</label>
             <input type="text" id="name" name="name" required>
             <button type="submit">Pago mediante Redsýs</button>
